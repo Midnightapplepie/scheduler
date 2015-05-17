@@ -48,7 +48,11 @@ def assign_night_staff(day_staffs,free_night_staffs)
   needed_roles = Default_roster.dup - filled_roles
   # how good the people already selected? 
   free_night_staffs = filter_by_roles(free_night_staffs,needed_roles)
-  
+  if free_night_staffs <= 2
+    return free_night_staffs
+  else
+    free_night_staffs.sort_by{|i| i.minimum_days_required}.pop(2)
+  end
 end
 
 
@@ -62,7 +66,9 @@ week1.each do |key,val|
   end
   
   val[:day] = assign_day_staff(free_day_staffs)
-  assign_night_staff(val[:day],free_night_staffs) if key == 1
+  
+  val[:night] = assign_night_staff(val[:day],free_night_staffs)
+
 end
 
 

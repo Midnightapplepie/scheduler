@@ -53,6 +53,9 @@ def generate_employee
   Employee.new(employee)
 end
 
+10.times do 
+  generate_employee
+end
 
 
 
