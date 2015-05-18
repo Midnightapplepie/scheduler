@@ -1,3 +1,4 @@
+require 'faker'
 # class Employee 
 #   attr_accessor :first_name, :last_name, :preferred_days, :minimum_days_required,
 #   :roles, :day_availabilities, :night_availabilities, :phone,:full_time
@@ -43,20 +44,25 @@ def generate_employee
   na = days.sample(n+2)
   tasks = roles.sample(2)
   
-  first_name = Faker::Name.first_name,
-  last_name = Faker::Name.last_name,
-  minimum_days_required = n,
-  night_availabilities = na,
-  preferred_days = na.sample(n),
-  day_availabilities = na.take(rand(0..na.count)),
-  tasks = tasks,
-  roles = {primary: tasks[0], secondary: tasks[1]},
-  full_time = (n == 5)? true : false
+  first_name = Faker::Name.first_name
+  last_name = Faker::Name.last_name
   
-  employee = Employee.new(first_name: first_name, last_name: last_name, minimum_days_required: minimum_days_required, phone_number: phone_number, full_time: full_time)
+  minimum_days_required = n
+  tasks = tasks
+  full_time = (n == 5)? true : false
+  phone_number = Faker::PhoneNumber.cell_phone
+  
+  employee = Employee.create(first_name: first_name, last_name: last_name, minimum_days_required: minimum_days_required, phone_number: phone_number, full_time: full_time)
+
+  employee.day_availabilities = na.take(rand(0..na.count))
+  employee.night_availabilities = na
+  employee.preferred_days = na.sample(n)
+  employee.roles = {primary: tasks[0], secondary: tasks[1]}
+
 end
+
+
 
 10.times do 
   generate_employee
 end
-
