@@ -6,7 +6,11 @@ class CreateEmployees < ActiveRecord::Migration
   		t.integer  :minimum_days_required
   		t.string   :phone_number
   		t.boolean  :full_time
-  		t.integer  :days_assigned, :default => 0
+  		t.string  :days_assigned_text, :default => ""
+      t.string   :morning_avail_text
+      t.string   :night_avail_text
+      t.string   :roles_text
+      t.string   :preferred_days_text
 
   		t.timestamps
   	end
