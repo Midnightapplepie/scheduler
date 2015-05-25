@@ -1,0 +1,27 @@
+<% @generated_schedule[0][0].each do |name| %>
+	<p><%= name.first_name %></p>
+	<p>primary role : <%= name.roles[:primary] %></p>
+	<p>secondary role : <%= name.roles[:secondary] %></p>
+<% end %>
+
+<hr>
+
+<% @week.each do |day, value| %>
+<h2><%= day %></h2>
+	<div>
+	<% assign_role(value).each do |role, employee| %>
+		<p><%= "#{role} #{employee.first_name}"  %></p>
+
+		<!-- <p><%= employee.roles[:primary] %></p>
+		<p><%= employee.roles[:secondary] %></p> -->
+
+
+	<% end %>
+	</div>
+<% end %> 
+
+
+
+	
+
+
