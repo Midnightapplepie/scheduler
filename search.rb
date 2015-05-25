@@ -226,33 +226,33 @@ week.generate
 # week.all_combos.each{|week| puts week.map{|day| day.map{|e| e.first_name}}.inspect}
 # combos.each{|team| puts team.map{|e| e.first_name}.inspect}
 # puts week.score(combos[0],day) == -1
-team_1 = [8,7,6,3]
-team_1.map!{|i| Employee.find(i)}
-roles_1 = team_1.map{|e| e.roles[:primary]}
+# team_1 = [8,7,6,3]
+# team_1.map!{|i| Employee.find(i)}
+# roles_1 = team_1.map{|e| e.roles[:primary]}
 
-team_2 = [8,7,6,5]
-team_2.map!{|i| Employee.find(i)}
-roles_2 = team_2.map{|e| e.roles[:primary]}
+# team_2 = [8,7,6,5]
+# team_2.map!{|i| Employee.find(i)}
+# roles_2 = team_2.map{|e| e.roles[:primary]}
 
-team_mon = [8,7,5,4].map{|i| Employee.find(i)}
-team_tue = [8,1,2,4].map{|i| Employee.find(i)}
-team_wed = [1,3,7,5].map{|i| Employee.find(i)}
-team_thur = [1,3,5,4].map{|i| Employee.find(i)}
-team_fri = [1,3,5,9].map{|i| Employee.find(i)}
-team_sat = [1,3,9].map{|i| Employee.find(i)}
-team_sun = [8,3,5,6].map{|i| Employee.find(i)}
+# team_mon = [8,7,5,4].map{|i| Employee.find(i)}
+# team_tue = [8,1,2,4].map{|i| Employee.find(i)}
+# team_wed = [1,3,7,5].map{|i| Employee.find(i)}
+# team_thur = [1,3,5,4].map{|i| Employee.find(i)}
+# team_fri = [1,3,5,9].map{|i| Employee.find(i)}
+# team_sat = [1,3,9].map{|i| Employee.find(i)}
+# team_sun = [8,3,5,6].map{|i| Employee.find(i)}
 
-puts "Test No.1 all_roles_filled? and passed_filter"
-puts week.all_roles_filled?(team_1,roles_1) == false
-puts week.passed_initial_filter?(team_1) == false
-puts "Test No.2 all_roles_filled? and passed_filter"
-puts week.all_roles_filled?(team_2,roles_2) == true
-puts week.passed_initial_filter?(team_2) == true
+# puts "Test No.1 all_roles_filled? and passed_filter"
+# puts week.all_roles_filled?(team_1,roles_1) == false
+# puts week.passed_initial_filter?(team_1) == false
+# puts "Test No.2 all_roles_filled? and passed_filter"
+# puts week.all_roles_filled?(team_2,roles_2) == true
+# puts week.passed_initial_filter?(team_2) == true
 
-puts week.qualify_teams(day1).any?{|team| (team - team_mon).count == 0}
-puts week.qualify_teams(day2).any?{|team| (team - team_tue).count == 0}
-puts week.qualify_teams(day3).any?{|team| (team - team_wed).count == 0}
-puts week.qualify_teams(day4).any?{|team| (team - team_thur).count == 0}
-puts week.qualify_teams(day5).any?{|team| (team - team_fri).count == 0}
-puts week.qualify_teams(day7).any?{|team| (team - team_sun).count == 0}
-puts week.qualify_teams(day6).any?{|team| (team - team_sat).count ==1}	 
+# puts week.qualify_teams(day1).any?{|team| (team - team_mon).count == 0}
+# puts week.qualify_teams(day2).any?{|team| (team - team_tue).count == 0}
+# puts week.qualify_teams(day3).any?{|team| (team - team_wed).count == 0}
+# puts week.qualify_teams(day4).any?{|team| (team - team_thur).count == 0}
+# puts week.qualify_teams(day5).any?{|team| (team - team_fri).count == 0}
+# puts week.qualify_teams(day7).any?{|team| (team - team_sun).count == 0}
+# puts week.qualify_teams(day6).any?{|team| (team - team_sat).count ==1}	 

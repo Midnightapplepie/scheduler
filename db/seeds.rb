@@ -28,17 +28,17 @@ def generate_employee
     )
 end
 
-Employee.create(
-  first_name: "Matt",
-  last_name: "Matt",
-  minimum_days_required: 5,
-  phone_number: Faker::PhoneNumber.cell_phone,
-  full_time: true,
-  morning_avail_text: [1,2,3,4,5,6,7].join(","),
-  night_avail_text: [1,2,3,4,5,6,7].join(","),
-  preferred_days_text: [2,3,4,5,6].join(","),
-  roles_text: ["host","buser"].join(",")
-  )
+# Employee.create(
+#   first_name: "Matt",
+#   last_name: "Matt",
+#   minimum_days_required: 5,
+#   phone_number: Faker::PhoneNumber.cell_phone,
+#   full_time: true,
+#   morning_avail_text: [1,2,3,4,5,6,7].join(","),
+#   night_avail_text: [1,2,3,4,5,6,7].join(","),
+#   preferred_days_text: [2,3,4,5,6].join(","),
+#   roles_text: ["host","buser"].join(",")
+#   )
 
 Employee.create(
   first_name: "Justin",
@@ -112,17 +112,17 @@ Employee.create(
   roles_text: ["host","buser"].join(",")
   )
 
-Employee.create(
-  first_name: "Taylor",
-  last_name: "Taylor",
-  minimum_days_required: 3,
-  phone_number: Faker::PhoneNumber.cell_phone,
-  full_time: false,
-  morning_avail_text: [2].join(","),
-  night_avail_text: [1,2,7].join(","),
-  preferred_days_text: [1,2,7].join(","),
-  roles_text: ["host","host"].join(",")
-  )
+# Employee.create(
+#   first_name: "Taylor", 
+#   last_name: "Taylor",
+#   minimum_days_required: 3,
+#   phone_number: Faker::PhoneNumber.cell_phone,
+#   full_time: false,
+#   morning_avail_text: [2].join(","),
+#   night_avail_text: [1,2,7].join(","),
+#   preferred_days_text: [1,2,7].join(","),
+#   roles_text: ["host","host"].join(",")
+#   )
 
 Employee.create(
   first_name: "Jerry",
