@@ -1,12 +1,12 @@
-require './config/environment'
-require './weekday.rb'
-require 'benchmark'
+# require './config/environment'
+# require './weekday.rb'
+# require 'benchmark'
 
-staffs = Employee.all
+# staffs = Employee.all
 
-staffs.each do |e|
-	e.update(days_assigned_text: "")
-end
+# staffs.each do |e|
+# 	e.update(days_assigned_text: "")
+# end
 
 class Schedule
 	attr_accessor :priorities, :schedule, :all_combos
@@ -183,26 +183,27 @@ class Schedule
 	def generate
 		point = 1
 		optimal_sch = [] 
-		time = Benchmark.measure do
+		# time = Benchmark.measure do
 			schedule.each do |day|
 				filtered = qualify_teams(day)
 				update_all_combos(filtered)
 			end
-		end
-		puts time
+		# end
+		# puts time
 		puts self.all_combos.count
 		
-		time = Benchmark.measure do
+		# time = Benchmark.measure do
 			optimal_sch = filter_all_combo
-		end
-		puts time
+		# end
+		# puts time
 		optimal_sch.each do |week|
 			week.each do |day|
 				puts day.map{|e| e.first_name}.inspect
 			end
-			puts ""
-			puts "...."
+			# puts ""
+			# puts "...."
 		end
+		optimal_sch
 	end
 
 	def assign(day,employee)
@@ -210,19 +211,19 @@ class Schedule
 	end
 end
 
-week = Schedule.new(staffs) 
-day1 = week.schedule[0]
-day2 = week.schedule[1]
-day3 = week.schedule[2]
-day4 = week.schedule[3]
-day5 = week.schedule[4]
-day6 = week.schedule[5]
-day7 = week.schedule[6]
+# week = Schedule.new(staffs) 
+# day1 = week.schedule[0]
+# day2 = week.schedule[1]
+# day3 = week.schedule[2]
+# day4 = week.schedule[3]
+# day5 = week.schedule[4]
+# day6 = week.schedule[5]
+# day7 = week.schedule[6]
 
 # week.qualify_teams(week.schedule[2])
 # week.optimal_combo(day1)
 # week.optimal_combo(day2)
-week.generate
+# week.generate
 # week.all_combos.each{|week| puts week.map{|day| day.map{|e| e.first_name}}.inspect}
 # combos.each{|team| puts team.map{|e| e.first_name}.inspect}
 # puts week.score(combos[0],day) == -1
