@@ -34,3 +34,12 @@ def assign_role(day_array)
 	end
 	hash
 end
+
+def organize_data(params)
+	hash ={}
+	data = %w[first_name last_name minimum_days_required phone_number full_time days_assigned_text morning_avail_text night_avail_text roles_text preferred_days_text]
+	data.each do |key|
+		hash[key.to_sym] = params[key]
+	end
+	hash
+end

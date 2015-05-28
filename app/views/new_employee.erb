@@ -1,0 +1,151 @@
+
+<div class="container">
+	<form action="/new_employee" method="post">
+		<input class="btn btn-info" type="submit" value="Save"><br>
+		<label for="first_name">First Name</label>
+		<input type="text" name="first_name">
+		<br>
+		<label for="last_name">Last Name</label>
+		<input type="text" name="last_name">
+		<br>
+		<label for="minimum_days_required">Minimum Days Required</label>
+		<input type="number" name="minimum_days_required">
+		<br>
+		<label for="phone_number">Phone</label>
+		<input type="tel" name="phone_number">
+
+		<input type="hidden" name="id">
+		<input id="full_time" type="hidden" name="full_time" value="false">
+	
+		<input id="days_assigned" type="hidden" name="days_assigned_text">
+
+		<input id="day_avail" type="hidden" name="morning_avail_text">
+
+		<input id="night_avail" type="hidden" name="night_avail_text">
+
+		<input id="preferred_days" type="hidden" name="preferred_days_text">
+
+		<input type="hidden" name="roles_text">
+	</form>
+
+	<button class="btn btn-default full_time f-t" data-id="full_time">Full Time</button>
+	<div class="row">
+		<div class="btn-group day_avail" data-id="day_avail" role="group" aria-label="">
+			<div class="btn btn-default col-sx-4">Day Avail</div>
+			<button type="button" class="btn btn-default weekday">1</button>
+			<button type="button" class="btn btn-default weekday">2</button>
+			<button type="button" class="btn btn-default weekday">3</button>
+			<button type="button" class="btn btn-default weekday">4</button>
+			<button type="button" class="btn btn-default weekday">5</button>
+			<button type="button" class="btn btn-default weekday">6</button>
+			<button type="button" class="btn btn-default weekday">7</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="btn-group night_avail" data-id="night_avail" role="group" aria-label="">
+			<div class="btn btn-default col-sx-4">Night Avail</div>
+			<button type="button" class="btn btn-default weekday">1</button>
+			<button type="button" class="btn btn-default weekday">2</button>
+			<button type="button" class="btn btn-default weekday">3</button>
+			<button type="button" class="btn btn-default weekday">4</button>
+			<button type="button" class="btn btn-default weekday">5</button>
+			<button type="button" class="btn btn-default weekday">6</button>
+			<button type="button" class="btn btn-default weekday">7</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="btn-group preferred_days" data-id="preferred_days" role="group" aria-label="">
+			<div class="btn btn-default col-sx-4">Preferred</div>
+			<button type="button" class="btn btn-default weekday">1</button>
+			<button type="button" class="btn btn-default weekday">2</button>
+			<button type="button" class="btn btn-default weekday">3</button>
+			<button type="button" class="btn btn-default weekday">4</button>
+			<button type="button" class="btn btn-default weekday">5</button>
+			<button type="button" class="btn btn-default weekday">6</button>
+			<button type="button" class="btn btn-default weekday">7</button>
+		</div>
+	</div>
+</div>
+
+<script>
+	var full_time = $('#full_time')
+	var full_time_btn = $('.full_time')
+	console.log(full_time.val())
+	if(full_time.val() === "true"){
+		full_time_btn.toggleClass("btn-default")
+		full_time_btn.toggleClass("btn-success")
+	}
+
+	var ids = ["day_avail","night_avail","preferred_days"]
+	for(i in ids){
+		var id = $("#"+ids[i]).val().split(",");
+
+		var clas = $("."+ids[i])
+		if(id[0] != ""){	
+			for(var i = 0; i<id.length; i++){
+				var day= clas.find('button:contains('+id[i]+')');
+				day.toggleClass("btn-default")
+				day.toggleClass("btn-success")
+			}
+		}
+	}
+</script>
+
+<script type="text/javascript">
+	function add_day(id_name,day_string){
+		var element = $('#'+id_name)
+		var days = element.val().split(",");
+		console.log(days)
+		console.log(day_string)
+		if(days[0] === ""){
+			element.val(day_string)
+		}else{
+			days.push(day_string);
+			console.log(days)
+			element.val(days.join(","))
+		}
+	}
+
+	function remove_day(id_name,day_string){
+		var element = $('#'+id_name)
+		var days = element.val().split(",");
+		var index = days.indexOf(day_string);
+		if(index > -1 ){
+			days.splice(index,1);
+			element.val(days.join(","));
+		}
+	}
+
+	var buttons = $('.weekday')
+	buttons.click(function(){
+		var id = $(this).parent().data().id
+		var day = $(this).html()
+
+		if($(this).hasClass("btn-default")){
+			add_day(id,day)
+		}else if($(this).hasClass("btn-success")){
+			remove_day(id,day)
+		}
+		$(this).toggleClass("btn-default")
+		$(this).toggleClass("btn-success")
+	})
+
+	var full_time = $('.f-t')
+	full_time.click(function(){
+		var id = $(this).data().id
+		var ele = $("#"+id)
+		if(ele.val()==="false"){
+			ele.val("true")
+		}else{
+			ele.val("false")
+		}
+		$(this).toggleClass("btn-default")
+		$(this).toggleClass("btn-success")
+	})
+
+	$('.edit').click(function(){
+		var id = $(this).data().id
+		var ele = $(".form_"+id)
+		ele.toggleClass("hide")
+	})
+</script>

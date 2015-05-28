@@ -1,13 +1,3 @@
-# require './config/environment'
-# require './weekday.rb'
-# require 'benchmark'
-
-# staffs = Employee.all
-
-# staffs.each do |e|
-# 	e.update(days_assigned_text: "")
-# end
-
 class Schedule
 	attr_accessor :priorities, :schedule, :all_combos
 	attr_reader :staffs, :default_needs, :staffs_by_min_days_required, :all_staffs_id
@@ -16,7 +6,7 @@ class Schedule
 		@staffs = staffs
 		@staffs_by_min_days_required = {}
 		staffs.each{|e| staffs_by_min_days_required[e.id] = e.minimum_days_required}
-		# @days_unassigned = [1,2,3,4,5,6,7]
+
 		@schedule = new_schedule
 		@all_combos = []
 		plot_staffs
@@ -34,7 +24,7 @@ class Schedule
 			end
 		end
 	end
-
+ 
 	def morning_closed?(n)
 		return true if [1,7].include?(n)
 	end
@@ -113,7 +103,6 @@ class Schedule
 		else
 			new_all_combos = []
 			self.all_combos.each do |week|
-				# puts week[0].map{|e|e.first_name}.inspect
 				new_week = []
 				filtered.each do |day|
 					new_week = week.clone << day
@@ -122,7 +111,6 @@ class Schedule
 				end
 			end
 			self.all_combos = new_all_combos.clone
-			# puts self.all_combos.last.map{|day| day.map{|e| e.first_name}}.inspect
 		end
 	end
 
@@ -137,7 +125,7 @@ class Schedule
 		employees = self.staffs.map{|e| e.id}
 		max = 0
 		filtered = []
-		time = Benchmark.measure do 
+		# time = Benchmark.measure do 
 			self.all_combos.each do |week|
 				all_week = week.flatten.map{|e| e.id}
 				if (employees - all_week).empty? && passed_min_days_required_test(all_week)
@@ -150,8 +138,8 @@ class Schedule
 					end
 				end
 			end
-		end
-		puts time
+		# end
+		# puts time
 		puts filtered.count
 		puts "max !!!!!!!!!!!!!!!!!!!!!!!!!!!!!    #{max}"
 		filtered
