@@ -3,7 +3,7 @@ ruby '2.0.0'
 
 # PostgreSQL driver
 gem 'pg'
-gem 'thin'
+# gem 'thin'
 
 # Sinatra driver
 gem 'sinatra'
