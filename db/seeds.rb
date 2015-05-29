@@ -1,3 +1,4 @@
+require 'faker'
 # def generate_employee
 #   days = [1,2,3,4,5,6,7]
 #   roles = ["host", "buser", "delivery", "kitchen"]
