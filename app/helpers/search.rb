@@ -61,7 +61,7 @@ class Schedule
 			primary_roles = team.map{|e| e.roles[:primary]}
 			primary_roles.uniq.count < 3
 		end
-		return selected if selected.count <= 10
+		return selected if selected.count <= 7
 
 		#eliminate all combo where no one can work on morning 
 		selected.delete_if do |team| 
@@ -74,7 +74,7 @@ class Schedule
 	end
 
 	def score_by_flex(teams)
-		teams.sort_by{|team| team.map{|e| e.flex_score}.inject(:+)}.pop(6)
+		teams.sort_by{|team| team.map{|e| e.flex_score}.inject(:+)}.pop(5)
 	end
 
 	def qualify_teams(day)
@@ -89,11 +89,11 @@ class Schedule
 			filtered << team if passed_initial_filter?(team)
 		end
 
-		if filtered.count > 10
+		if filtered.count > 7
 			filtered = reduce_qualified_to_10(filtered,day)
 		end
 
-		if filtered.count > 6
+		if filtered.count > 7
 			filtered = score_by_flex(filtered)
 		end
 		filtered
