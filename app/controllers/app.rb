@@ -16,9 +16,11 @@ end
 
 get '/new_schedule' do
 	ids = params["ids"].split(",")
-	staffs = ids.map{|i| Employee.find(i)}
-	week = Schedule.new(staffs)
-	@schedule = prepare_for_view(week.generate,staffs).sample 
+	all_staffs = ids.map{|i| Employee.find(i)}
+	working_staffs= all_staffs.select{|e| e.minimum_days_required > 0}
+	backup_staffs = all_staffs.select{|e| e.minimum_days_required == 0}
+	week = Schedule.new(working_staffs)
+	@schedule = prepare_for_view(week.generate,working_staffs,backup_staffs).sample 
 
 	erb :schedule
 end

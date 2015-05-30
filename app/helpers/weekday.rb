@@ -65,9 +65,11 @@ class Weekday
 	def assign_morning(employees_ar)
 		staffs = employees_ar.select{|e| e.morning_avail.include?(self.int)}
 		roles = self.morning_roles_needed
-	
-		self.morning_shift = assign_by_roles(staffs,roles)
-		self.morning_avail -= self.morning_shift.values
+		
+		if ![1,7].include?(self.int)
+			self.morning_shift = assign_by_roles(staffs,roles)
+			self.morning_avail -= self.morning_shift.values
+		end
 	end	
 
 

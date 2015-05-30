@@ -25,10 +25,24 @@
 
 		<input id="preferred_days" type="hidden" name="preferred_days_text">
 
-		<input type="hidden" name="roles_text">
+		<input id="roles_text" type="hidden" name="roles_text">
 	</form>
 
 	<button class="btn btn-default full_time f-t" data-id="full_time">Full Time</button>
+	<div class="row">
+		<select id="primary" class="btn btn-default role">
+		  <option value="host">Prim: Host</option>
+		  <option value="kitchen">Prim: Kitchen</option>
+		  <option value="delivery">Prim: Delivery</option>
+		  <option value="buser">Prim: Buser</option>
+		</select>
+		<select id="secondary" class="btn btn-default role">
+		  <option value="host">Sec: Host</option>
+		  <option value="kitchen">Sec: Kitchen</option>
+		  <option value="delivery">Sec: Delivery</option>
+		  <option value="buser">Sec: Buser</option>
+		</select>
+	</div>
 	<div class="row">
 		<div class="btn-group day_avail" data-id="day_avail" role="group" aria-label="">
 			<div class="btn btn-default col-sx-4">Day Avail</div>
@@ -89,9 +103,7 @@
 			}
 		}
 	}
-</script>
 
-<script type="text/javascript">
 	function add_day(id_name,day_string){
 		var element = $('#'+id_name)
 		var days = element.val().split(",");
@@ -148,4 +160,19 @@
 		var ele = $(".form_"+id)
 		ele.toggleClass("hide")
 	})
+
+	function updateRoles(){
+		var dropdowns = $(".role")
+		dropdowns.change(function(){
+			var primary = $("#primary")
+			var secondary = $("#secondary")
+			var prim_role = primary.find(":selected").val()
+			var sec_role = secondary.find(":selected").val()
+
+			$("#roles_text").val(prim_role+","+sec_role)
+
+		})
+	}
+
+	updateRoles()
 </script>

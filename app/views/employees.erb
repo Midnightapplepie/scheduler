@@ -16,14 +16,15 @@
 		<button class="btn btn-default full_time_<%=employee.id%> f-t" data-id="full_time_<%=employee.id%>">Full Time</button>
 		<br><br>
 
-		<div class="input-group">
-			<span class="input-group-addon">First Name</span>
+		<div class="input-group w-50">
+			<span class="input-group-addon">First</span>
 			<input class="form-control" type="text" name="first_name" value=<%= employee.first_name %>>
 		</div>
-		<div class="input-group">
-			<span class="input-group-addon">Last Name</span>
+		<div class="input-group w-50">
+			<span class="input-group-addon">Last</span>
 			<input class="form-control" type="text" name="last_name" value=<%= employee.last_name %>>
 		</div>
+			
 		<div class="input-group">
 			<span class="input-group-addon">Phone</span>
 			<input class="form-control" type="tel" name="phone_number" value=<%= employee.phone_number %>>
@@ -43,8 +44,22 @@
 
 			<input id="preferred_days_<%= employee.id%>" type="hidden" name="preferred_days_text" value=<%= employee.preferred_days_text %>>
 
-			<input type="hidden" name="roles_text" value=<%= employee.roles_text %>>
+			<input id="roles_text_<%= employee.id%>" type="hidden" name="roles_text" value=<%= employee.roles_text %>>
 		</form>
+		<div> Roles: 
+		<select id="primary_<%= employee.id%>" data-id=<%= employee.id%> class="btn btn-default role">
+		  <option value="host">Prim: Host</option>
+		  <option value="kitchen">Prim: Kitchen</option>
+		  <option value="delivery">Prim: Delivery</option>
+		  <option value="buser">Prim: Buser</option>
+		</select>
+		<select id="secondary_<%= employee.id%>" data-id=<%= employee.id%> class="btn btn-default role">
+		  <option value="host">Sec: Host</option>
+		  <option value="kitchen">Sec: Kitchen</option>
+		  <option value="delivery">Sec: Delivery</option>
+		  <option value="buser">Sec: Buser</option>
+		</select>
+		</div>
 		<br>
 		<div class="btn-group day_avail_<%= employee.id%>" data-id="day_avail_<%=employee.id%>" role="group" aria-label="">
 			<div class="btn btn-default col-sx-4">Day</div>
@@ -82,27 +97,46 @@
 </div>
 <script>
 	var employee_id = <%= employee.id %>
-	var full_time = $('#full_time_'+employee_id)
-	var full_time_btn = $('.full_time_'+employee_id)
-	console.log(full_time.val())
-	if(full_time.val() === "true"){
-		full_time_btn.toggleClass("btn-default")
-		full_time_btn.toggleClass("btn-success")
+
+	function initFullTimeButton(id){
+		var full_time = $('#full_time_'+employee_id)
+		var full_time_btn = $('.full_time_'+employee_id)
+		if(full_time.val() === "true"){
+			full_time_btn.toggleClass("btn-default")
+			full_time_btn.toggleClass("btn-success")
+		}
 	}
 
-	var ids = ["day_avail_","night_avail_","preferred_days_"]
-	for(i in ids){
-		var id = $("#"+ids[i]+employee_id).val().split(",");
+	function initPersonalSchedule(emp_id){
+		var ids = ["day_avail_","night_avail_","preferred_days_"]
+		for(i in ids){
+			var id = $("#"+ids[i]+emp_id).val().split(",");
 
-		var clas = $("."+ids[i]+employee_id)
-		if(id[0] != ""){	
-			for(var i = 0; i<id.length; i++){
-				var day= clas.find('button:contains('+id[i]+')');
-				day.toggleClass("btn-default")
-				day.toggleClass("btn-success")
+			var clas = $("."+ids[i]+emp_id)
+			if(id[0] != ""){	
+				for(var i = 0; i<id.length; i++){
+					var day= clas.find('button:contains('+id[i]+')');
+					day.toggleClass("btn-default")
+					day.toggleClass("btn-success")
+				}
 			}
 		}
 	}
+
+	function initRoles(id){
+		var roles =  $("#roles_text_"+id).val().split(",")
+		var primary = roles[0];
+		var secondary = roles[1];
+		$("#primary_"+id).val(primary)
+		$("#secondary_"+id).val(secondary)
+	}
+
+
+
+	initRoles(employee_id)
+	initFullTimeButton(employee_id)
+	initPersonalSchedule(employee_id)
+
 </script>
 <% end %>
 
@@ -110,13 +144,10 @@
 	function add_day(id_name,day_string){
 		var element = $('#'+id_name)
 		var days = element.val().split(",");
-		console.log(days)
-		console.log(day_string)
 		if(days[0] === ""){
 			element.val(day_string)
 		}else{
 			days.push(day_string);
-			console.log(days)
 			element.val(days.join(","))
 		}
 	}
@@ -131,49 +162,77 @@
 		}
 	}
 
-	var buttons = $('.weekday')
-	buttons.click(function(){
-		var id = $(this).parent().data().id
-		var day = $(this).html()
+	function addWeekdayBtnEventListener(){
+		var buttons = $('.weekday')
+		buttons.click(function(){
+			var id = $(this).parent().data().id
+			var day = $(this).html()
 
-		if($(this).hasClass("btn-default")){
-			add_day(id,day)
-		}else if($(this).hasClass("btn-success")){
-			remove_day(id,day)
-		}
-		$(this).toggleClass("btn-default")
-		$(this).toggleClass("btn-success")
-	})
+			if($(this).hasClass("btn-default")){
+				add_day(id,day)
+			}else if($(this).hasClass("btn-success")){
+				remove_day(id,day)
+			}
+			$(this).toggleClass("btn-default")
+			$(this).toggleClass("btn-success")
+		})
+	}
 
-	var full_time = $('.f-t')
-	full_time.click(function(){
-		var id = $(this).data().id
-		var ele = $("#"+id)
-		if(ele.val()==="false"){
-			ele.val("true")
-		}else{
-			ele.val("false")
-		}
-		$(this).toggleClass("btn-default")
-		$(this).toggleClass("btn-success")
-	})
+	function addFullTimeEventListener(){
+		var full_time = $('.f-t')
+		full_time.click(function(){
+			var id = $(this).data().id
+			var ele = $("#"+id)
+			if(ele.val()==="false"){
+				ele.val("true")
+			}else{
+				ele.val("false")
+			}
+			$(this).toggleClass("btn-default")
+			$(this).toggleClass("btn-success")
+		})
+	}
 
-	$('.edit').click(function(){
-		var id = $(this).data().id
-		var ele = $(".form_"+id)
-		ele.toggleClass("hide")
-	})
+	function addEditBtnEventListener(){		
+		$('.edit').click(function(){
+			var id = $(this).data().id
+			var ele = $(".form_"+id)
+			ele.toggleClass("hide")
+		})
+	}
 
-	$('.delete').click(function(){
-		var name = $(this).data().name
-		var id = $(this).data().id
-		var confirmation = confirm("Confirm deleting employee "+name)
-		if(confirmation == true){
-			console.log("yes")
-			$.post("/delete_employee", {id: id}).
-			done(function(){
-				$("#"+id).remove();
-			})
-		}
-	})	
+	function addDeleteBtnEventListener(){
+		$('.delete').click(function(){
+			var name = $(this).data().name
+			var id = $(this).data().id
+			var confirmation = confirm("Confirm deleting employee "+name)
+			if(confirmation == true){
+				console.log("yes")
+				$.post("/delete_employee", {id: id}).
+				done(function(){
+					$("#"+id).remove();
+				})
+			}
+		})
+	}
+
+	function addRoleBtnEventListener(){
+		var dropdowns = $(".role")
+		dropdowns.change(function(){
+			var id = $(this).data().id;
+			var primary = $("#primary_"+id)
+			var secondary = $("#secondary_"+id)
+			var prim_role = primary.find(":selected").val()
+			var sec_role = secondary.find(":selected").val()
+
+			$("#roles_text_"+id).val(prim_role+","+sec_role)
+
+		})
+	}
+
+	addFullTimeEventListener();
+	addDeleteBtnEventListener();
+	addEditBtnEventListener();
+	addWeekdayBtnEventListener();
+	addRoleBtnEventListener();
 </script>
