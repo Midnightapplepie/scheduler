@@ -3,21 +3,32 @@
 <% ids = @schedule.map{|d| d.night_shift.values.map{|e| e.id}}.flatten %>
 <div class="list-group">
 	<% @schedule.each do |day| %>
-		<div class="list-group-item">
-			<%=day.day%> all day:
-			<% day.morning_shift.each do |role,sad| %>
-				<button class="btn btn-success employee e-<%= sad.id%>" data-desired=<%=sad.minimum_days_required %> data-name=<%=sad.first_name %> data-day=<%= day.int %> data-id=<%= sad.id %>>
-					<%=sad.first_name%> (<%= ids.count(sad.id).to_s + "/" + sad.minimum_days_required.to_s %>)
-				</button>
-			<% end %>
+		<div class="list-group-item list-group-item-info">
+		<div class="row">
+			<div class="day col-xs-4"><%=day.day%> <br> all day:</div> 
+				<% day.morning_shift.each do |role,sad| %>
+				<div class= "col-xs-4">
+					<button class="btn btn-success employee e-<%= sad.id%>" data-desired=<%=sad.minimum_days_required %> data-name=<%=sad.first_name %> data-day=<%= day.int %> data-id=<%= sad.id %>>
+						<%=sad.first_name%> (<%= ids.count(sad.id).to_s + "/" + sad.minimum_days_required.to_s %>)
+					</button>
+				</div>
+				<% end %>
+
+		</div>
 		</div>
 		<div class="list-group-item">
+		<div class="container">
 			<% (day.night_shift.values-day.morning_shift.values).each do |sad| %>
-				<button class="btn btn-success employee e-<%= sad.id%>" data-desired=<%=sad.minimum_days_required %> data-name=<%=sad.first_name %> data-day=<%= day.int %> data-id=<%= sad.id %>><%=sad.first_name%> (<%= ids.count(sad.id).to_s + "/" + sad.minimum_days_required.to_s %>)</button>
+			<div class="name-btn">
+				<button class="btn btn-success btn-block employee e-<%= sad.id%>" data-desired=<%=sad.minimum_days_required %> data-name=<%=sad.first_name %> data-day=<%= day.int %> data-id=<%= sad.id %>><%=sad.first_name%> (<%= ids.count(sad.id).to_s + "/" + sad.minimum_days_required.to_s %>)</button>
+			</div>
 			<% end %>
 			<% day.night_avail.each do |happy| %>
-				<button class="btn btn-off employee e-<%= happy.id%>" data-desired=<%=happy.minimum_days_required %> data-name=<%=happy.first_name %> data-day=<%= day.int %> data-id=<%= happy.id %>><%=happy.first_name%> (<%= ids.count(happy.id).to_s + "/" + happy.minimum_days_required.to_s %>)</button>
+			<div class="name-btn">
+				<button class="btn btn-off btn-block employee e-<%= happy.id%>" data-desired=<%=happy.minimum_days_required %> data-name=<%=happy.first_name %> data-day=<%= day.int %> data-id=<%= happy.id %>><%=happy.first_name%> (<%= ids.count(happy.id).to_s + "/" + happy.minimum_days_required.to_s %>)</button>
+			</div>
 			<% end %>
+		</div>
 		</div>
 	<% end %>
 </div>

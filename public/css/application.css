@@ -2,3 +2,21 @@
 	background-color: grey;
 	color: white;
 }	
+
+.day{
+	color: grey;
+	font-weight: bold;
+	display: inline-block;
+	float: left;
+}
+
+.fl-r{
+	display: inline-block;
+	float: right;
+}
+
+.name-btn{
+	width: 50%;
+	display: inline-block;
+	float: left;
+}
