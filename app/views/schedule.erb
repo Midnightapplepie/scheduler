@@ -1,27 +1,63 @@
-<% @generated_schedule[0][0].each do |name| %>
-	<p><%= name.first_name %></p>
-	<p>primary role : <%= name.roles[:primary] %></p>
-	<p>secondary role : <%= name.roles[:secondary] %></p>
-<% end %>
-
-<hr>
-
-<% @week.each do |day, value| %>
-<h2><%= day %></h2>
-	<div>
-	<% assign_role(value).each do |role, employee| %>
-		<p><%= "#{role} #{employee.first_name}"  %></p>
-
-		<!-- <p><%= employee.roles[:primary] %></p>
-		<p><%= employee.roles[:secondary] %></p> -->
-
-
+<% n=0 %>
+<p>Note: Name (days assigned/ days desired)</p>
+<% ids = @schedule.map{|d| d.night_shift.values.map{|e| e.id}}.flatten %>
+<div class="list-group">
+	<% @schedule.each do |day| %>
+		<div class="list-group-item">
+			<%=day.day%> all day:
+			<% day.morning_shift.each do |role,sad| %>
+				<button class="btn btn-success employee e-<%= sad.id%>" data-desired=<%=sad.minimum_days_required %> data-name=<%=sad.first_name %> data-day=<%= day.int %> data-id=<%= sad.id %>>
+					<%=sad.first_name%> (<%= ids.count(sad.id).to_s + "/" + sad.minimum_days_required.to_s %>)
+				</button>
+			<% end %>
+		</div>
+		<div class="list-group-item">
+			<% (day.night_shift.values-day.morning_shift.values).each do |sad| %>
+				<button class="btn btn-success employee e-<%= sad.id%>" data-desired=<%=sad.minimum_days_required %> data-name=<%=sad.first_name %> data-day=<%= day.int %> data-id=<%= sad.id %>><%=sad.first_name%> (<%= ids.count(sad.id).to_s + "/" + sad.minimum_days_required.to_s %>)</button>
+			<% end %>
+			<% day.night_avail.each do |happy| %>
+				<button class="btn btn-off employee e-<%= happy.id%>" data-desired=<%=happy.minimum_days_required %> data-name=<%=happy.first_name %> data-day=<%= day.int %> data-id=<%= happy.id %>><%=happy.first_name%> (<%= ids.count(happy.id).to_s + "/" + happy.minimum_days_required.to_s %>)</button>
+			<% end %>
+		</div>
 	<% end %>
-	</div>
-<% end %> 
+</div>
+<script type="text/javascript">
+	var assigned = <%= ids %>
+	console.log(assigned)
+
+	function update_button(id){
+		var buttons = $('.e-'+id)
+		var count = 0
+		for(var i=0; i<assigned.length; i++){
+			if(assigned[i] === id){
+				count+=1
+			}
+		}
+
+		for(var i=0; i<buttons.length; i++){
+			var ele = $(buttons[i])
+			var content = ele.data().name + " (" + count + "/" + ele.data().desired + ")"
+			ele.html(content)
+		}
+	}
+
+
+	var buttons = $(".employee")
+	buttons.click(function(){
+		var id = $(this).data().id
+		var index = assigned.indexOf(id)
+		if($(this).hasClass("btn-success")){
+			assigned.splice(index,1)
+			update_button(id)
+		}else{
+			assigned.push(id)
+			update_button(id)
+		}
+		$(this).toggleClass("btn-success")
+		$(this).toggleClass("btn-off")
+	})
+</script>
 
 
 
-	
-
-
+ 

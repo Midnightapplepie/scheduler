@@ -9,21 +9,23 @@ class Schedule
 
 		@schedule = new_schedule
 		@all_combos = []
-		plot_staffs
+		# plot_staffs
 	end
 
 	def new_schedule
-		[1,2,3,4,5,6,7].map{|i| Weekday.new(i)}
-	end
-
-	def plot_staffs
-		schedule.each do |day|
-			day.night_avail = staffs.select{|e| e.night_avail.include?(day.int)}
-			if !morning_closed?(day.int)
-				day.morning_avail = staffs.select{|e| e.morning_avail.include?(day.int)}
-			end
+		[1,2,3,4,5,6,7].map do |i| 
+			Weekday.new(i,self.staffs)
 		end
 	end
+
+	# def plot_staffs
+	# 	self.schedule.each do |day|
+	# 		day.night_avail = staffs.select{|e| e.night_avail.include?(day.int)}
+	# 		if !morning_closed?(day.int)
+	# 			day.morning_avail = staffs.select{|e| e.morning_avail.include?(day.int)}
+	# 		end
+	# 	end
+	# end
  
 	def morning_closed?(n)
 		return true if [1,7].include?(n)
@@ -126,22 +128,22 @@ class Schedule
 		max = 0
 		filtered = []
 		# time = Benchmark.measure do 
-			self.all_combos.each do |week|
-				all_week = week.flatten.map{|e| e.id}
-				if (employees - all_week).empty? && passed_min_days_required_test(all_week)
-					point = score_week(week,all_week)
-					if point > max
-						max = point
-						filtered = [week]
-					elsif point == max
-						filtered << week
-					end
+		self.all_combos.each do |week|
+			all_week = week.flatten.map{|e| e.id}
+			if (employees - all_week).empty? && passed_min_days_required_test(all_week)
+				point = score_week(week,all_week)
+				if point > max
+					max = point
+					filtered = [week]
+				elsif point == max
+					filtered << week
 				end
 			end
+		end
 		# end
 		# puts time
-		puts filtered.count
-		puts "max !!!!!!!!!!!!!!!!!!!!!!!!!!!!!    #{max}"
+		# puts filtered.count
+		# puts "max !!!!!!!!!!!!!!!!!!!!!!!!!!!!!    #{max}"
 		filtered
 	end 
 
@@ -168,29 +170,39 @@ class Schedule
 		point
 	end
 
+	def time_est
+		self.schedule.each do |day|
+			filtered = qualify_teams(day)
+			update_all_combos(filtered)
+		end
+
+		self.all_combos.count * 0.00009550754
+	end
+
 	def generate
 		point = 1
 		optimal_sch = [] 
 		# time = Benchmark.measure do
-			schedule.each do |day|
+			self.schedule.each do |day|
 				filtered = qualify_teams(day)
 				update_all_combos(filtered)
 			end
 		# end
 		# puts time
+		# puts self.staffs.map{|e| e.first_name}.inspect
 		puts self.all_combos.count
 		
 		# time = Benchmark.measure do
-			optimal_sch = filter_all_combo
+		optimal_sch = filter_all_combo
 		# end
 		# puts time
-		optimal_sch.each do |week|
-			week.each do |day|
-				puts day.map{|e| e.first_name}.inspect
-			end
-			# puts ""
-			# puts "...."
-		end
+		# optimal_sch.each do |week|
+		# 	week.each do |day|
+		# 		puts day.map{|e| e.first_name}.inspect
+		# 	end
+		# 	# puts ""
+		# 	# puts "...."  
+		# end
 		optimal_sch
 	end
 

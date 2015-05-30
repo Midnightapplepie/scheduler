@@ -134,10 +134,10 @@ Employee.create(
   preferred_days_text: [5,6].join(","),
   roles_text: ["kitchen","buser"].join(",")
   )
-
+ 
 Employee.create(
-  first_name: "New_Guy",
-  last_name: "New_Guy",
+  first_name: "Eddy",
+  last_name: "Eddy",
   minimum_days_required: 2,
   phone_number: "",
   full_time: false,

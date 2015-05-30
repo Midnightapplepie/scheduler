@@ -1,27 +1,37 @@
+<a class ="btn btn-danger btn-lg btn-block" href="/">Back to Generate new Schedule</a>
 <a class ="btn btn-primary btn-lg btn-block" href="/new_employee">Add Employee </a>
+
 <% @staffs.each do |employee| %>
-<div id="<%= employee.id%>" class="container-fluid panel panel-default">
+<div id="<%= employee.id%>" class="panel panel-default">
 	<div class="panel-body">
-		
-	<h3><%= "#{employee.first_name} #{employee.last_name}" %></h3>
-	<p><%= "phone: #{employee.phone_number}" %></p>
-	<button class="btn btn-danger edit" data-id=<%= employee.id%>>Edit</button>
-	<button class="btn btn-danger delete" data-id=<%= employee.id%> data-name=<%= employee.first_name%>>Delete</button>
+		<h3><%= "#{employee.first_name} #{employee.last_name}" %></h3>
+		<p><%= "phone: #{employee.phone_number}" %></p>
+		<button class="btn btn-danger edit" data-id=<%= employee.id%>>Edit</button>
+		<button class="btn btn-danger delete" data-id=<%= employee.id%> data-name=<%= employee.first_name%>>Delete</button>
+	</div>
 	<div class="container form_<%= employee.id%> hide">
 		<form action="/edit/<%= employee.id%>" method="post">
-			<input class="btn btn-info" type="submit" value="Save"><br>
-			<label for="first_name">First Name</label>
-			<input type="text" name="first_name" value=<%= employee.first_name %>>
-			<br>
-			<label for="last_name">Last Name</label>
-			<input type="text" name="last_name" value=<%= employee.last_name %>>
-			<br>
-			<label for="minimum_days_required">Minimum Days Required</label>
-			<input type="number" name="minimum_days_required" value=<%= employee.minimum_days_required %>>
-			<br>
-			<label for="phone_number">Phone</label>
-			<input type="tel" name="phone_number" value=<%= employee.phone_number %>>
 
+		<input class="btn btn-info" type="submit" value="Save">
+		<button class="btn btn-default full_time_<%=employee.id%> f-t" data-id="full_time_<%=employee.id%>">Full Time</button>
+		<br><br>
+
+		<div class="input-group">
+			<span class="input-group-addon">First Name</span>
+			<input class="form-control" type="text" name="first_name" value=<%= employee.first_name %>>
+		</div>
+		<div class="input-group">
+			<span class="input-group-addon">Last Name</span>
+			<input class="form-control" type="text" name="last_name" value=<%= employee.last_name %>>
+		</div>
+		<div class="input-group">
+			<span class="input-group-addon">Phone</span>
+			<input class="form-control" type="tel" name="phone_number" value=<%= employee.phone_number %>>
+		</div>
+		<div class="input-group">
+			<span class="input-group-addon">Minimum Days Required</span>
+			<input class="form-control" type="number" name="minimum_days_required" value=<%= employee.minimum_days_required %>>
+		</div>
 			<input type="hidden" name="id" value=<%= employee.id%>>
 			<input id="full_time_<%= employee.id%>" type="hidden" name="full_time" value=<%= employee.full_time %>>
 		
@@ -35,46 +45,40 @@
 
 			<input type="hidden" name="roles_text" value=<%= employee.roles_text %>>
 		</form>
+		<br>
+		<div class="btn-group day_avail_<%= employee.id%>" data-id="day_avail_<%=employee.id%>" role="group" aria-label="">
+			<div class="btn btn-default col-sx-4">Day</div>
+			<button type="button" class="btn btn-default weekday">1</button>
+			<button type="button" class="btn btn-default weekday">2</button>
+			<button type="button" class="btn btn-default weekday">3</button>
+			<button type="button" class="btn btn-default weekday">4</button>
+			<button type="button" class="btn btn-default weekday">5</button>
+			<button type="button" class="btn btn-default weekday">6</button>
+			<button type="button" class="btn btn-default weekday">7</button>
+		</div>
+		<div class="btn-group night_avail_<%= employee.id%>" data-id="night_avail_<%=employee.id%>" role="group" aria-label="">
+			<div class="btn btn-default col-sx-4">Night</div>
+			<button type="button" class="btn btn-default weekday">1</button>
+			<button type="button" class="btn btn-default weekday">2</button>
+			<button type="button" class="btn btn-default weekday">3</button>
+			<button type="button" class="btn btn-default weekday">4</button>
+			<button type="button" class="btn btn-default weekday">5</button>
+			<button type="button" class="btn btn-default weekday">6</button>
+			<button type="button" class="btn btn-default weekday">7</button>
+		</div>
 
-		<button class="btn btn-default full_time_<%=employee.id%> f-t" data-id="full_time_<%=employee.id%>">Full Time</button>
-		<div class="row">
-			<div class="btn-group day_avail_<%= employee.id%>" data-id="day_avail_<%=employee.id%>" role="group" aria-label="">
-				<div class="btn btn-default col-sx-4">Day Avail</div>
-				<button type="button" class="btn btn-default weekday">1</button>
-				<button type="button" class="btn btn-default weekday">2</button>
-				<button type="button" class="btn btn-default weekday">3</button>
-				<button type="button" class="btn btn-default weekday">4</button>
-				<button type="button" class="btn btn-default weekday">5</button>
-				<button type="button" class="btn btn-default weekday">6</button>
-				<button type="button" class="btn btn-default weekday">7</button>
-			</div>
-		</div>
-		<div class="row">
-			<div class="btn-group night_avail_<%= employee.id%>" data-id="night_avail_<%=employee.id%>" role="group" aria-label="">
-				<div class="btn btn-default col-sx-4">Night Avail</div>
-				<button type="button" class="btn btn-default weekday">1</button>
-				<button type="button" class="btn btn-default weekday">2</button>
-				<button type="button" class="btn btn-default weekday">3</button>
-				<button type="button" class="btn btn-default weekday">4</button>
-				<button type="button" class="btn btn-default weekday">5</button>
-				<button type="button" class="btn btn-default weekday">6</button>
-				<button type="button" class="btn btn-default weekday">7</button>
-			</div>
-		</div>
-		<div class="row">
-			<div class="btn-group preferred_days_<%= employee.id%>" data-id="preferred_days_<%=employee.id%>" role="group" aria-label="">
-				<div class="btn btn-default col-sx-4">Preferred</div>
-				<button type="button" class="btn btn-default weekday">1</button>
-				<button type="button" class="btn btn-default weekday">2</button>
-				<button type="button" class="btn btn-default weekday">3</button>
-				<button type="button" class="btn btn-default weekday">4</button>
-				<button type="button" class="btn btn-default weekday">5</button>
-				<button type="button" class="btn btn-default weekday">6</button>
-				<button type="button" class="btn btn-default weekday">7</button>
-			</div>
+		<div class="btn-group preferred_days_<%= employee.id%>" data-id="preferred_days_<%=employee.id%>" role="group" aria-label="">
+			<div class="btn btn-default col-sx-4">Prefer</div>
+			<button type="button" class="btn btn-default weekday">1</button>
+			<button type="button" class="btn btn-default weekday">2</button>
+			<button type="button" class="btn btn-default weekday">3</button>
+			<button type="button" class="btn btn-default weekday">4</button>
+			<button type="button" class="btn btn-default weekday">5</button>
+			<button type="button" class="btn btn-default weekday">6</button>
+			<button type="button" class="btn btn-default weekday">7</button>
 		</div>
 	</div>
-	</div>
+	<br>
 </div>
 <script>
 	var employee_id = <%= employee.id %>

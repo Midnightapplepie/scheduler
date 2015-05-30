@@ -4,7 +4,7 @@ class Weekday
 				  :night_roles_needed, :morning_shift, :night_shift
 	attr_reader :day, :int
 
-	def initialize(n)
+	def initialize(n,all_staffs)
 		days={1 => "Monday",
 			  2 => "Tuesday",
 			  3 => "Wedensday",
@@ -18,28 +18,64 @@ class Weekday
 
 
 		@morning_avail = []
-		@morning_shift = []
+		@morning_shift = {}
 			
 		@night_avail = []
-		@night_shift = []
+		@night_shift = {}
 		if [1,7].include?(int)
 			@morning_roles_needed = []
 		else
 			@morning_roles_needed = ["host","kitchen"]
 		end
 		@night_roles_needed = ["host","kitchen","buser","delivery"]
+		plot_day(all_staffs)
 	end
 
-	def count_morning_avail_with(role)
-		morning_avail.count{|employee| employee.roles[:primary] == role}
+	def plot_day(all_staffs)
+		self.night_avail = all_staffs.select{|e| e.night_avail.include?(self.int)}
+		if ![1,7].include?(self.int)
+			self.morning_avail = all_staffs.select{|e| e.morning_avail.include?(self.int)}
+		end
+	end
+
+	def assign_by_roles(employees_ar,roles_ar)
+		hash = {}
+		roles = roles_ar
+		staffs = employees_ar
+		employees_ar.each do |employee|
+			prim_role = employee.roles[:primary]
+			sec_role = employee.roles[:secondary]
+			if hash[prim_role]
+				if hash[sec_role]
+					r = roles.sample
+					hash[r] = employee
+					roles.delete(r)
+				else
+					hash[sec_role] = employee	
+					roles.delete(sec_role)
+				end
+			else
+				hash[prim_role] = employee
+				roles.delete(prim_role)
+			end
+		end
+		hash
+	end
+
+	def assign_morning(employees_ar)
+		staffs = employees_ar.select{|e| e.morning_avail.include?(self.int)}
+		roles = self.morning_roles_needed
+	
+		self.morning_shift = assign_by_roles(staffs,roles)
+		self.morning_avail -= self.morning_shift.values
 	end	
 
-	def count_night_avail_with(role)
-		night_avail.count{|employee| employee.roles[:primary] == role}
+
+	def assign_night(employees_ar) 
+		roles = self.night_roles_needed
+		self.night_avail-= employees_ar
+		self.night_shift = assign_by_roles(employees_ar,roles)
 	end
 
-	def acceptable
-		roles_exist = []
-		night_shift.each{|e| roles_exist<< e.roles[:primary]}
-	end
+
 end
