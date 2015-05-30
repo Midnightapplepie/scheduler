@@ -3,6 +3,7 @@
 	<button type="button" class="employee btn btn-success btn-block" data-id=<%=staff.id%>><%= staff.first_name %></button>
 <%end %>
 <br>
+<div id="time" class="btn btn-block time"></div>
 <br>
 <button type="button" id="generate" class="btn btn-primary btn-block">Generate Schedule</button>
 
@@ -12,20 +13,37 @@
 
 <script type="text/javascript">
 	var employees = $(".employee")
+	var selected = []
+
+	function updateSelected(){
+		selected = []
+		var employees = $(".btn-success")
+		for(var i=0; i < employees.length; i++){
+			selected.push($(employees[i]).data().id)
+		}
+	}
+
+	function updateTime(){
+		var div = $("#time");
+		$.get("/time",{ids: selected}).done(function(data){
+			$("#time").html("estimated time: "+ Math.ceil(data.data) + " sec")
+		})
+	}
+
 	employees.click(function(){
 		$(this).toggleClass("btn-success")
 		$(this).toggleClass("btn-default")
+		updateSelected()
+		updateTime()
 
 	}) 
 
 	var generate = $("#generate")
 	generate.click(function(){
-		var employees = $(".btn-success")
-		var selected = []
-		for(var i=0; i < employees.length; i++){
-			selected.push($(employees[i]).data().id)
-		}
 		window.location.replace("/new_schedule?ids="+selected)
 	})
+
+	updateSelected()
+	updateTime()
 </script>
 

@@ -5,6 +5,15 @@ get '/' do
 	erb :generate 
 end
 
+get '/time' do
+	puts params
+	staffs = params["ids"].map{|i| Employee.find(i)}
+	week = Schedule.new(staffs)
+	time = week.time_est
+
+	json :data => time
+end
+
 get '/new_schedule' do
 	ids = params["ids"].split(",")
 	staffs = ids.map{|i| Employee.find(i)}
